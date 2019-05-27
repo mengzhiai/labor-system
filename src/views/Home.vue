@@ -2,8 +2,11 @@
   <div class="home">
     <div class="header">
       <div class="switch">
-        <div>常用</div>
-        <div>全部</div>
+        <div class="menu">
+          <div>常用</div>
+          <div class="active">全部</div>
+        </div>
+        <div class="login-out" @click="logOff" title="注销">管理员<img src="../assets/img/close.png" alt=""></div>
       </div>
       <div class="top-menu">
         <li
@@ -12,7 +15,7 @@
           :class="{activeNow: activeNow == i}"
           @click="addClick(i)"
         >
-          <img src="../assets/img/warn.png" :class="item.active">
+          <img :src="item.pic" :class="item.active">
           <div class="tit">{{item.tit}}</div>
         </li>
       </div>
@@ -25,15 +28,15 @@
     </div>
     <div class="content">
       <el-row>
-        <div class="side">
-          <el-col :span="4">
+        <el-col :span="3">
             <el-row>
-              <el-col :span="24">
+              <el-col :span="24" class="side">
                 <el-menu
                   default-active="1-1"
                   class="el-menu-vertical-demo"
                   @open="handleOpen"
                   @close="handleClose"
+                  :default-openeds="openeds"
                   router
                 >
                   <el-submenu index="1">
@@ -45,7 +48,7 @@
                       <el-menu-item index="teamPlan">小队需求计划管理</el-menu-item>
                       <el-menu-item index="planApproval">小队需求计划审批</el-menu-item>
                       <el-menu-item index="workshop">车间需求计划审批</el-menu-item>
-                      <el-menu-item index="planApproval">厂需求计划管理</el-menu-item>
+                      <el-menu-item index="demand">厂需求计划管理</el-menu-item>
                     </el-menu-item-group>
                   </el-submenu>
                   <el-submenu index="2">
@@ -54,8 +57,8 @@
                       <span>物品出入库管理</span>
                     </template>
                     <el-menu-item-group>
-                      <el-menu-item index="planApproval">采购入库管理</el-menu-item>
-                      <el-menu-item index="planApproval">物品出库管理</el-menu-item>
+                      <el-menu-item index="procurement">采购入库管理</el-menu-item>
+                      <el-menu-item index="outWarehouse">物品出库管理</el-menu-item>
                     </el-menu-item-group>
                   </el-submenu>
                   <el-submenu index="3">
@@ -64,12 +67,12 @@
                       <span>物品分配管理</span>
                     </template>
                     <el-menu-item-group>
-                      <el-menu-item index="planApproval">物品分配管理</el-menu-item>
-                      <el-menu-item index="planApproval">车间领用记录</el-menu-item>
-                      <el-menu-item index="planApproval">小队领用记录</el-menu-item>
-                      <el-menu-item index="planApproval">个人领用记录</el-menu-item>
-                      <el-menu-item index="planApproval">物品调换记录</el-menu-item>
-                      <el-menu-item index="planApproval">发放标准管理</el-menu-item>
+                      <el-menu-item index="allocation">物品分配管理</el-menu-item>
+                      <el-menu-item index="workshopUse">车间领用记录</el-menu-item>
+                      <el-menu-item index="teamUse">小队领用记录</el-menu-item>
+                      <el-menu-item index="personalUse">个人领用记录</el-menu-item>
+                      <el-menu-item index="exchange">物品调换记录</el-menu-item>
+                      <el-menu-item index="provide">发放标准管理</el-menu-item>
                     </el-menu-item-group>
                   </el-submenu>
                   <el-submenu index="4">
@@ -78,11 +81,11 @@
                       <span>周期发放管理</span>
                     </template>
                     <el-menu-item-group>
-                      <el-menu-item index="planApproval">发放记录管理</el-menu-item>
-                      <el-menu-item index="planApproval">发放记录审核</el-menu-item>
-                      <el-menu-item index="planApproval">临时发放管理</el-menu-item>
-                      <el-menu-item index="planApproval">临时发放审核</el-menu-item>
-                      <el-menu-item index="planApproval">暂停记录管理</el-menu-item>
+                      <el-menu-item index="plan">发放记录管理</el-menu-item>
+                      <el-menu-item index="planReview">发放记录审核</el-menu-item>
+                      <el-menu-item index="temporaryPlan">临时发放管理</el-menu-item>
+                      <el-menu-item index="temporaryAudit">临时发放审核</el-menu-item>
+                      <el-menu-item index="pauseRecord">暂停记录管理</el-menu-item>
                     </el-menu-item-group>
                   </el-submenu>
                   <el-submenu index="5">
@@ -91,11 +94,8 @@
                       <span>劳保仓库管理</span>
                     </template>
                     <el-menu-item-group>
-                      <el-menu-item index="planApproval">库存明细</el-menu-item>
-                      <el-menu-item index="planApproval">物品消耗明细</el-menu-item>
-                      <el-menu-item index="planApproval"></el-menu-item>
-                      <el-menu-item index="planApproval"></el-menu-item>
-                      <el-menu-item index="planApproval"></el-menu-item>
+                      <el-menu-item index="detail">库存明细</el-menu-item>
+                      <el-menu-item index="costManagement">物品消耗明细</el-menu-item>
                     </el-menu-item-group>
                   </el-submenu>
                   <el-submenu index="6">
@@ -111,27 +111,15 @@
                       <span>基础信息模块</span>
                     </template>
                     <el-menu-item-group>
-                      <el-menu-item index="planApproval">物品信息管理</el-menu-item>
-                      <el-menu-item index="planApproval">劳保卡信息管理</el-menu-item>
-                      <el-menu-item index="planApproval"></el-menu-item>
-                      <el-menu-item index="planApproval"></el-menu-item>
-                      <el-menu-item index="planApproval"></el-menu-item>
+                      <el-menu-item index="goodsInfo">物品信息管理</el-menu-item>
+                      <el-menu-item index="laborInfo">劳保卡信息管理</el-menu-item>
                     </el-menu-item-group>
                   </el-submenu>
                 </el-menu>
               </el-col>
             </el-row>
           </el-col>
-        </div>
-        <el-col :span="20">
-          <div class="nav-child">
-            <el-breadcrumb separator="/">
-              <el-breadcrumb-item :to="{ path: '/' }">物品采购管理</el-breadcrumb-item>
-              <el-breadcrumb-item>
-                <a href="/">采购入库管理</a>
-              </el-breadcrumb-item>
-            </el-breadcrumb>
-          </div>
+        <el-col :span="21">
           <router-view class="main"></router-view>
         </el-col>
       </el-row>
@@ -143,37 +131,49 @@
 export default {
   data() {
     return {
+      openeds: ['1'],
+      uniqueOpended: false,
       menus: [
         {
-          tit: "看板"
+          tit: "看板",
+          pic: require('../assets/img/kb.png')
         },
         {
-          tit: "TCS"
+          tit: "TCS",
+          pic: require('../assets/img/tcs.png')
         },
         {
-          tit: "鼓风"
+          tit: "鼓风",
+          pic: require('../assets/img/gf.png')
         },
         {
-          tit: "压滤"
+          tit: "压滤",
+          pic: require('../assets/img/yl.png')
         },
         {
           tit: "劳保",
-          active: "active"
+          active: "active",
+          pic: require('../assets/img/lb.png')
         },
         {
-          tit: "报警"
+          tit: "报警",
+          pic: require('../assets/img/warn.png')
         },
         {
-          tit: "启停"
+          tit: "启停",
+          pic: require('../assets/img/qt.png')
         },
         {
-          tit: "煤质化验"
+          tit: "煤质化验",
+          pic: require('../assets/img/mzhy.png')
         },
         {
-          tit: "加介"
+          tit: "加介",
+          pic: require('../assets/img/jj.png')
         },
         {
-          tit: "系统"
+          tit: "系统",
+          pic: require('../assets/img/system.png')
         }
       ],
       activeNow: 4
@@ -200,17 +200,48 @@ export default {
 <style lang="scss" scoped>
 .home {
   .header {
-    background: blue;
     color: #fff;
+    background-image: url("../assets/img/bac.png");
+    width: 100%;
+    height: 160px;
+    background-position: top center;
+    background-color: #f5f5f5;
+    z-index: 3;
     .switch {
-      display: flex;
-      justify-content: center;
+      position: relative;
       line-height: 40px;
       border-bottom: 1px solid #fff;
-      > div {
-        width: 50%;
-        text-align: center;
+      .menu{
+        display: flex;
+        width: 200px;
+        margin: 0 auto;
+        justify-content: space-between;
+        font-size: 18px;
+        font-weight: 700;
+        >div{
+          cursor: pointer;
+          width: 60px;
+          text-align: center;
+          &:hover{
+            border-bottom: 3px solid #ccc;
+          }
+        }
+        .active{
+          border-bottom: 3px solid #ccc;
+        }
       }
+      .login-out{
+        position: absolute;
+        right: 20px;
+        top: 0;
+        cursor: pointer;
+        img{
+        width: 25px;
+        height: 25px;
+        margin: 7px 0;
+      }
+      }
+      
     }
     .top-menu {
       display: flex;
@@ -257,8 +288,8 @@ export default {
 }
 .content {
   .side {
-    height: 100%;
-    // border: 1px solid #ccc;
+    min-height: 800px;
+    border-right: 1px solid #ccc;
   }
   .nav-child {
     margin: 15px;

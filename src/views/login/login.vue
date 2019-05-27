@@ -1,5 +1,6 @@
 <template>
   <div class="login">
+    <div class="header"><img src="../../assets/img/ico.png"> 劳保用品管理系统</div>
     <div class="maxbox">
       <div class="title">
         <!-- <img src="@/assets/img/logo.png" alt> -->
@@ -28,6 +29,7 @@
         </div>
       </div>
     </div>
+    <div class="footer">天津中新智冠信息技术有限公司</div>
   </div>
 </template>
 
@@ -74,7 +76,7 @@ export default {
     onSubmit(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$router.push("/deviceInformation");
+          this.$router.push("/teamPlan");
         }
       });
     }
@@ -84,10 +86,23 @@ export default {
 
 <style lang="scss" scoped>
 .login {
+  .header{
+    line-height: 60px;
+    font-size: 26px;
+    font-weight: 800;
+    background-color: #EBECED;
+    padding: 0 20px;
+    color: #134990;
+  }
+  .maxbox{
+    width: 1200px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
   .login-box {
-    // background-image: url("../../assets/img/login.jpeg");
+    background-image: url("../../assets/img/login_bg.png");
     width: 100%;
-    height: 500px;
+    height: 600px;
     background-position: top center;
     background-color: #f5f5f5;
     z-index: 3;
@@ -98,7 +113,7 @@ export default {
     }
     .panel {
       background-color: #fff;
-      margin: 50px 20px;
+      margin: 100px 20px;
       padding: 40px 20px;
       .tab {
         display: grid;
@@ -132,6 +147,15 @@ export default {
   }
   .login-group{
     text-align: right;
+  }
+  .footer{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    line-height: 40px;
+    background-color: #f8f7f7;
   }
 }
 
